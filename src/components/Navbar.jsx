@@ -4,60 +4,67 @@ import { Link, useNavigate } from 'react-router-dom';
 const Navbar = () => {
   const navigate = useNavigate();
   
-  // LocalStorage থেকে ইউজার ডাটা নিচ্ছি (তোমার প্রজেক্টের লজিক অনুযায়ী এটি পরিবর্তন হতে পারে)
+  // LocalStorage থেকে ইউজার ডাটা নিচ্ছি
   const user = JSON.parse(localStorage.getItem('user')); 
 
   const handleLogout = () => {
-    localStorage.removeItem('user'); // বা তোমার টোকেন রিমুভ করার লজিক
+    localStorage.removeItem('user'); // টোকেন বা ইউজার ডাটা রিমুভ
     navigate('/login');
   };
 
   return (
-    <nav className="bg-white border-b border-gray-200 py-4 px-6 shadow-sm">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
+    <nav className="w-full px-6 py-4 bg-white border-b border-gray-200 shadow-sm">
+      <div className="flex items-center justify-between mx-auto max-w-7xl">
         
-        {/* লোগো */}
-        <Link to="/" className="text-2xl font-bold text-orange-600 italic">
+        {/* লোগো - এখানে 'to' ব্যবহার করা হয়েছে যা ঠিক আছে */}
+        <Link to="/" className="text-2xl italic font-bold text-orange-600 transition hover:opacity-80">
           FoodHub
         </Link>
 
         {/* মেনু আইটেমসমূহ */}
-        <div className="hidden md:flex space-x-8 items-center font-medium text-gray-700">
-          <Link href="/" className="hover:text-orange-600 transition">Home</Link>
+        <div className="items-center hidden space-x-8 font-medium text-gray-700 md:flex">
+          {/* এখানে href পরিবর্তন করে to করে দেওয়া হয়েছে */}
+          <Link to="/" className="transition duration-300 hover:text-orange-600">
+            Home
+          </Link>
 
-          {/* ইউজার রোল অনুযায়ী আলাদা মেনু */}
+          {/* ইউজার রোল অনুযায়ী ডাইনামিক মেনু */}
           {user?.role === 'USER' && (
             <>
-              <Link to="/order" className="hover:text-orange-600 transition">Order Food</Link>
-              <Link to="/my-orders" className="hover:text-orange-600 transition">My Orders</Link>
+              <Link to="/order" className="transition duration-300 hover:text-orange-600">Order Food</Link>
+              <Link to="/my-orders" className="transition duration-300 hover:text-orange-600">My Orders</Link>
             </>
           )}
 
           {user?.role === 'SELLER' && (
-            <Link to="/create-food" className="hover:text-orange-600 transition">Add Food</Link>
+            <Link to="/create-food" className="transition duration-300 hover:text-orange-600">Add Food</Link>
           )}
 
           {user?.role === 'ADMIN' && (
-            <Link to="/admin/orders" className="hover:text-orange-600 transition">Admin Dashboard</Link>
+            <Link to="/admin/orders" className="transition duration-300 hover:text-orange-600">Admin Dashboard</Link>
           )}
         </div>
 
-        {/* লগইন/লগআউট বাটন */}
+        {/* লগইন/লগআউট সেকশন */}
         <div className="flex items-center space-x-4">
           {user ? (
             <div className="flex items-center space-x-4">
-              <span className="text-sm font-semibold text-gray-500">Hi, {user.name}</span>
+              <span className="hidden text-sm font-semibold text-gray-500 sm:inline">
+                Hi, {user.name}
+              </span>
               <button 
                 onClick={handleLogout}
-                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition text-sm"
+                className="px-5 py-2 text-sm font-medium text-white transition-all duration-300 bg-red-500 rounded-lg shadow-md hover:bg-red-600 hover:shadow-lg"
               >
                 Logout
               </button>
             </div>
           ) : (
-            <div className="space-x-4">
-              <Link to="/login" className="text-gray-700 hover:text-orange-600">Login</Link>
-              <Link to="/register" className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition text-sm">
+            <div className="flex items-center space-x-4">
+              <Link to="/login" className="font-medium text-gray-700 hover:text-orange-600">
+                Login
+              </Link>
+              <Link to="/register" className="px-5 py-2 text-sm font-medium text-white transition-all duration-300 bg-orange-600 rounded-lg shadow-md hover:bg-orange-700 hover:shadow-lg">
                 Sign Up
               </Link>
             </div>
