@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "../api/axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -15,22 +15,22 @@ export default function Login() {
       // ১. ডাটা সেভ করা
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role", res.data.user.role);
-      localStorage.setItem("user", JSON.stringify(res.data.user)); 
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
       alert("Login success!");
-      
-      // ✅ ২. রোল অনুযায়ী সঠিক পেজে পাঠানো (এই অংশটুকু পরিবর্তন করা হয়েছে)
+
+      // ✅ ২. রোল অনুযায়ী সঠিক পেজে পাঠানো
       const userRole = res.data.user.role;
 
       if (userRole === "ADMIN") {
-        navigate("/admin/orders"); // অ্যাডমিন যাবে সব অর্ডারের লিস্টে
+        navigate("/admin/orders");
       } else if (userRole === "SELLER") {
-        navigate("/create-food");  // সেলার যাবে খাবার অ্যাড করার পেজে
+        navigate("/create-food");
       } else {
-        navigate("/");             // সাধারণ ইউজার যাবে খাবারের লিস্ট দেখতে
+        navigate("/");
       }
 
-      // ৩. স্টেট রিফ্রেশ নিশ্চিত করতে (অপশনাল কিন্তু কার্যকরী)
+      // ৩. স্টেট রিফ্রেশ নিশ্চিত করতে
       window.location.reload();
 
     } catch (error) {
@@ -39,37 +39,65 @@ export default function Login() {
   };
 
   return (
-    <div style={{ padding: "40px", maxWidth: "400px", margin: "0 auto", textAlign: "center" }}>
-      <h2 style={{ color: "#2c3e50" }}>Login</h2>
-      <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-        <input 
-          type="email" 
-          placeholder="Email" 
-          value={email}
-          onChange={(e) => setEmail(e.target.value)} 
-          required 
-          style={{ padding: "12px", borderRadius: "5px", border: "1px solid #ddd" }}
-        />
-        <input 
-          type="password" 
-          placeholder="Password" 
-          value={password}
-          onChange={(e) => setPassword(e.target.value)} 
-          required 
-          style={{ padding: "12px", borderRadius: "5px", border: "1px solid #ddd" }}
-        />
-        <button type="submit" style={{ 
-          padding: "12px", 
-          backgroundColor: "#3498db", 
-          color: "white", 
-          border: "none", 
-          borderRadius: "5px", 
-          cursor: "pointer",
-          fontWeight: "bold"
-        }}>
-          Login
-        </button>
-      </form>
+    <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md p-10 space-y-8 bg-white border border-gray-100 shadow-xl rounded-2xl">
+        <div>
+          <h2 className="text-4xl font-extrabold tracking-tight text-center text-orange-600">
+            FoodHub
+          </h2>
+          <p className="mt-2 text-sm font-medium text-center text-gray-500">
+            Please log in to your account
+          </p>
+        </div>
+
+        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
+          <div className="space-y-4 rounded-md">
+            {/* Email Field */}
+            <div>
+              <label className="block ml-1 text-sm font-bold text-gray-700">Email Address</label>
+              <input
+                type="email"
+                required
+                className="block w-full px-4 py-3 mt-1 transition-all border border-gray-300 shadow-sm outline-none rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                placeholder="example@gmail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+
+            {/* Password Field */}
+            <div>
+              <label className="block ml-1 text-sm font-bold text-gray-700">Password</label>
+              <input
+                type="password"
+                required
+                className="block w-full px-4 py-3 mt-1 transition-all border border-gray-300 shadow-sm outline-none rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                placeholder="******"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              className="relative flex justify-center w-full px-4 py-3 text-base font-bold text-white transition-all duration-200 transform bg-orange-600 border border-transparent shadow-lg group rounded-xl hover:bg-orange-700 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+            >
+              Log In
+            </button>
+          </div>
+        </form>
+
+        <div className="text-center">
+          <p className="text-sm text-gray-600">
+            Don't have an account?{" "}
+            <Link to="/register" className="font-bold text-orange-600 hover:underline">
+              Register here
+            </Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
