@@ -8,29 +8,35 @@ export default function EditFood() {
   const [food, setFood] = useState({ title: "", price: "" });
   const [loading, setLoading] = useState(true);
 
-  // পেজ লোড হলে আগের ডাটা নিয়ে আসা
   useEffect(() => {
+    
+    console.log("Fetching Food ID:", id);
+
     api.get(`/foods/${id}`)
       .then((res) => {
-        const foodData = res.data.data || res.data; 
-        setFood({ 
-          title: foodData.title || "", 
-          price: foodData.price || "" 
-        });
+       
+        const foodData = res.data?.data || res.data; 
+        
+        if (foodData) {
+          setFood({ 
+            title: foodData.title || "", 
+            price: foodData.price || "" 
+          });
+        }
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Fetch error:", err);
-        alert("Food not found!");
+        console.error("Fetch error details:", err.response?.data || err.message);
+        
+        alert("Food not found or Unauthorized! ❌");
         navigate("/");
       });
   }, [id, navigate]);
 
-  // আপডেট করার ফাংশন
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      // API PATCH কল
+     
       await api.patch(`/foods/${Number(id)}`, {
         title: food.title,
         price: Number(food.price),
@@ -39,14 +45,18 @@ export default function EditFood() {
       alert("Food updated successfully! ✅");
       navigate("/"); 
     } catch (error) {
-      console.error("Update error:", error.response?.data);
-      alert(error.response?.data?.message || "Update failed! ❌");
+      console.error("Update error details:", error.response?.data);
+      const errorMsg = error.response?.data?.message || "Update failed! ❌";
+      alert(errorMsg);
     }
   };
 
   if (loading) return (
     <div className="flex justify-center items-center min-h-[50vh]">
-      <p className="font-bold text-orange-500 animate-pulse">Loading food data...</p>
+      <div className="flex flex-col items-center gap-2">
+        <div className="w-10 h-10 border-4 border-orange-500 rounded-full border-t-transparent animate-spin"></div>
+        <p className="font-bold text-orange-500">Loading food data...</p>
+      </div>
     </div>
   );
 
