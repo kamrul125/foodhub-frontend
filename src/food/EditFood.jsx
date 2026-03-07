@@ -3,12 +3,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 
 export default function EditFood() {
-  const { id } = useParams(); // URL থেকে খাবারের ID নিবে
+  const { id } = useParams(); 
   const navigate = useNavigate();
   const [food, setFood] = useState({ title: "", price: "" });
   const [loading, setLoading] = useState(true);
 
-  // ১. প্রথমে খাবারের পুরনো ডাটা লোড করা
+ 
   useEffect(() => {
     api.get(`/foods/${id}`)
       .then((res) => {
@@ -21,7 +21,7 @@ export default function EditFood() {
       });
   }, [id, navigate]);
 
-  // ২. আপডেট করার ফাংশন
+
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
@@ -30,9 +30,9 @@ export default function EditFood() {
         price: Number(food.price),
       });
       alert("Food updated successfully!");
-      navigate("/"); // আপডেট শেষে হোম পেজে নিয়ে যাবে
+      navigate("/"); 
     } catch (error) {
-      // যদি আপনি অন্য সেলারের খাবার আপডেট করতে চান, ব্যাকএন্ড থেকে এই এরর আসবে
+     
       alert(error.response?.data?.message || "Update failed!");
     }
   };

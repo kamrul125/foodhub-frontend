@@ -27,7 +27,7 @@ export default function AllOrders() {
     try {
       await api.patch(`/orders/${orderId}`, { status: nextStatus });
       alert(`Order #${orderId} marked as ${nextStatus}`);
-      fetchOrders(); // ডাটা রিফ্রেশ করা
+      fetchOrders(); 
     } catch (err) {
       alert("Failed to update status");
     }

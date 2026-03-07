@@ -12,14 +12,14 @@ export default function Login() {
     try {
       const res = await api.post("/auth/login", { email, password });
 
-      // ১. ডাটা সেভ করা
+    
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role", res.data.user.role);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
       alert("Login success!");
 
-      // ✅ ২. রোল অনুযায়ী সঠিক পেজে পাঠানো
+    
       const userRole = res.data.user.role;
 
       if (userRole === "ADMIN") {
@@ -30,7 +30,7 @@ export default function Login() {
         navigate("/");
       }
 
-      // ৩. স্টেট রিফ্রেশ নিশ্চিত করতে
+    
       window.location.reload();
 
     } catch (error) {

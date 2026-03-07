@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import api from "../api/axios";
 
 export default function CreateOrder() {
-  const [foods, setFoods] = useState([]); // খাবারের লিস্ট রাখার জন্য
+  const [foods, setFoods] = useState([]); 
   const [selectedFoodId, setSelectedFoodId] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // ১. সব খাবারের লিস্ট লোড করা
+
   useEffect(() => {
     const fetchFoods = async () => {
       try {
@@ -26,7 +26,7 @@ export default function CreateOrder() {
     setLoading(true);
     try {
       const payload = {
-        foodIds: [Number(selectedFoodId)], // ড্রপডাউন থেকে আসা আইডি
+        foodIds: [Number(selectedFoodId)], 
         totalAmount: 200, 
         address: "Dhaka, Bangladesh",
         phone: "017XXXXXXXX"

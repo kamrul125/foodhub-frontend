@@ -52,7 +52,7 @@ export default function FoodList() {
           <p className="text-lg text-slate-500">No food items found at the moment.</p>
         </div>
       ) : (
-        /* কার্ডগুলো এখন গ্রিড আকারে সাজানো হবে */
+        
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {foods.map((f) => (
             <div key={f.id} className="overflow-hidden transition-all duration-300 bg-white border shadow-sm group rounded-2xl border-slate-100 hover:shadow-xl hover:-translate-y-1">

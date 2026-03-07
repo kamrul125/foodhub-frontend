@@ -4,18 +4,18 @@ import { Link, useNavigate } from 'react-router-dom';
 const Navbar = () => {
   const navigate = useNavigate();
   
-  // LocalStorage থেকে ইউজার এবং টোকেন ডাটা চেক করছি
+
   const user = JSON.parse(localStorage.getItem('user'));
   const token = localStorage.getItem('token');
 
   const handleLogout = () => {
-    // ১. সব ডাটা একবারে ক্লিয়ার করা (token, role, user)
+   
     localStorage.clear(); 
     
-    // ২. লগইন পেজে পাঠিয়ে দেওয়া
+    
     navigate('/login');
 
-    // ৩. স্টেট রিফ্রেশ নিশ্চিত করতে পেজ রিলোড (যাতে বাটনগুলো সাথে সাথে আপডেট হয়)
+    
     window.location.reload();
   };
 
@@ -34,7 +34,7 @@ const Navbar = () => {
             Home
           </Link>
 
-          {/* লগইন করা থাকলে এবং রোল অনুযায়ী ডাইনামিক মেনু */}
+         
           {token && user?.role === 'USER' && (
             <>
               <Link to="/order" className="transition duration-300 hover:text-orange-600">Order Food</Link>

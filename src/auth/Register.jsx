@@ -13,7 +13,7 @@ export default function Register() {
     e.preventDefault(); 
     
     try {
-      // এপিআই কল করার সময় আপনার ব্যাকএন্ডের রাউট অনুযায়ী চেক করে নিন
+      
       await api.post("/auth/register", {
         name,
         email,

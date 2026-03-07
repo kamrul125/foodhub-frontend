@@ -6,7 +6,7 @@ export default function CreateFood() {
   const [formData, setFormData] = useState({
     title: "",
     price: "",
-    category: "Pizza", // ডিফল্ট ক্যাটাগরি
+    category: "Pizza",
     description: "",
   });
   const [loading, setLoading] = useState(false);
@@ -24,7 +24,7 @@ export default function CreateFood() {
 
       if (response.status === 201 || response.status === 200) {
         alert(`✅ Food "${formData.title}" added successfully!`);
-        navigate("/"); // সাকসেস হলে হোম পেজে নিয়ে যাবে
+        navigate("/"); 
       }
     } catch (err) {
       console.error(err);
