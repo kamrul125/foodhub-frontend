@@ -12,7 +12,8 @@ export default function FoodList() {
     setLoading(true);
     api.get("/foods")
       .then((res) => {
-        setFoods(res.data);
+        // API response schema অনুযায়ী ডাটা সেট করা
+        setFoods(res.data.data || res.data); 
         setLoading(false);
       })
       .catch((err) => {
@@ -45,10 +46,10 @@ export default function FoodList() {
     if (window.confirm("আপনি কি নিশ্চিতভাবে এই খাবারটি ডিলিট করতে চান?")) {
       try {
         await api.delete(`/foods/${foodId}`);
-        alert("খাবারটি সফলভাবে ডিলিট হয়েছে!");
-        fetchFoods(); // ডিলিট করার পর লিস্ট আপডেট করা
+        alert("খাবারটি সফলভাবে ডিলিট হয়েছে!");
+        fetchFoods(); // লিস্ট রিফ্রেশ করা
       } catch (err) {
-        alert("ডিলিট করতে সমস্যা হয়েছে। সম্ভবত এটি আপনার যোগ করা খাবার নয়।");
+        alert("ডিলিট করতে সমস্যা হয়েছে।");
       }
     }
   };
@@ -63,9 +64,10 @@ export default function FoodList() {
     <div className="w-full">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-3xl font-extrabold text-slate-800">🍕 Available Foods</h2>
+        {/* ADD NEW FOOD বাটন ফিক্স */}
         <button 
           onClick={() => navigate("/add-food")} 
-          className="px-4 py-2 font-bold text-white bg-orange-500 rounded-lg hover:bg-orange-600"
+          className="px-6 py-2.5 font-bold text-white bg-orange-500 rounded-xl hover:bg-orange-600 transition-all shadow-md active:scale-95"
         >
           + Add New Food
         </button>
@@ -78,7 +80,7 @@ export default function FoodList() {
       ) : (
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {foods.map((f) => (
-            <div key={f.id} className="overflow-hidden transition-all duration-300 bg-white border shadow-sm group rounded-2xl border-slate-100 hover:shadow-xl hover:-translate-y-1">
+            <div key={f.id} className="overflow-hidden transition-all duration-300 bg-white border shadow-sm group rounded-2xl border-slate-100 hover:shadow-xl">
               <div className="p-6">
                 <div className="flex items-start justify-between mb-4">
                   <h3 className="text-xl font-bold transition-colors text-slate-800 group-hover:text-orange-600">
@@ -100,17 +102,17 @@ export default function FoodList() {
                     </button>
                   </div>
 
-                  {/* সেলারদের জন্য এডিট এবং ডিলিট বাটন */}
+                  {/* EDIT এবং DELETE বাটন ফিক্স */}
                   <div className="flex gap-2 pt-4 border-t border-slate-100">
                     <button 
                       onClick={() => navigate(`/edit-food/${f.id}`)}
-                      className="flex-1 px-3 py-2 text-sm font-bold text-blue-600 rounded-lg bg-blue-50 hover:bg-blue-100"
+                      className="flex-1 px-3 py-2 text-sm font-bold text-blue-600 transition-colors rounded-lg bg-blue-50 hover:bg-blue-100"
                     >
                       Edit ✏️
                     </button>
                     <button 
                       onClick={() => handleDelete(f.id)}
-                      className="flex-1 px-3 py-2 text-sm font-bold text-red-600 rounded-lg bg-red-50 hover:bg-red-100"
+                      className="flex-1 px-3 py-2 text-sm font-bold text-red-600 transition-colors rounded-lg bg-red-50 hover:bg-red-100"
                     >
                       Delete 🗑️
                     </button>

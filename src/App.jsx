@@ -6,8 +6,8 @@ import CreateOrder from "./order/CreateOrder";
 import MyOrders from "./order/MyOrders";
 import AllOrders from "./admin/AllOrders";
 import CreateFood from "./food/CreateFood"; 
+import EditFood from "./food/EditFood"; // ১. এডিট ফাইলটি ইমপোর্ট করুন
 import ProtectedRoute from "./routes/ProtectedRoute";
-
 
 import Navbar from "./components/Navbar"; 
 import Footer from "./components/Footer";
@@ -15,19 +15,13 @@ import Footer from "./components/Footer";
 export default function App() {
   return (
     <BrowserRouter>
-     
       <div className="flex flex-col min-h-screen bg-[#f8fafc] font-['Inter']">
-        
-       
         <header className="sticky top-0 shadow-sm z-1000">
           <Navbar /> 
         </header>
 
-     
         <main className="flex justify-center flex-1 px-4 py-12 md:px-6">
-          
           <div className="w-full p-6 bg-white border shadow-xl max-w-7xl md:p-10 rounded-2xl shadow-slate-200/50 border-slate-200">
-            
             <Routes>
               {/* ১. পাবলিক রাউট */}
               <Route path="/login" element={<Login />} />
@@ -43,12 +37,21 @@ export default function App() {
                 } 
               />
 
-              {/* ৩. সেলার রাউট */}
+              {/* ৩. সেলার রাউট (এডিট এবং অ্যাড ফিক্স) */}
               <Route
-                path="/create-food"
+                path="/add-food" // ২. আপনার বাটন navigate করছে /add-food এ, তাই এখানে নাম পরিবর্তন করলাম
                 element={
                   <ProtectedRoute role="SELLER">
                     <CreateFood />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/edit-food/:id" // ৩. এডিট করার জন্য এই রাউটটি অবশ্যই লাগবে
+                element={
+                  <ProtectedRoute role="SELLER">
+                    <EditFood />
                   </ProtectedRoute>
                 }
               />
@@ -82,13 +85,11 @@ export default function App() {
                 }
               />
 
-              {/* ভুল ইউআরএল-এর জন্য রিডাইরেক্ট */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </div>
         </main>
 
-        {/* ফুটার */}
         <Footer /> 
       </div>
     </BrowserRouter>
