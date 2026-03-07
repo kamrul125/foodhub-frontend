@@ -9,14 +9,14 @@ export default function EditFood() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    
-    console.log("Fetching Food ID:", id);
+    const fetchFood = async () => {
+      try {
+        const token = localStorage.getItem("token"); 
+        const res = await api.get(`/foods/${id}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
 
-    api.get(`/foods/${id}`)
-      .then((res) => {
-       
         const foodData = res.data?.data || res.data; 
-        
         if (foodData) {
           setFood({ 
             title: foodData.title || "", 
@@ -24,30 +24,32 @@ export default function EditFood() {
           });
         }
         setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Fetch error details:", err.response?.data || err.message);
-        
+      } catch (err) {
+        console.error("Fetch error:", err.response?.data);
         alert("Food not found or Unauthorized! ❌");
         navigate("/");
-      });
+      }
+    };
+
+    if (id) fetchFood();
   }, [id, navigate]);
 
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-     
+      const token = localStorage.getItem("token");
       await api.patch(`/foods/${Number(id)}`, {
         title: food.title,
         price: Number(food.price),
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
       });
       
       alert("Food updated successfully! ✅");
       navigate("/"); 
     } catch (error) {
-      console.error("Update error details:", error.response?.data);
-      const errorMsg = error.response?.data?.message || "Update failed! ❌";
-      alert(errorMsg);
+      console.error("Update error:", error.response?.data);
+      alert(error.response?.data?.message || "Update failed! ❌");
     }
   };
 
@@ -67,10 +69,9 @@ export default function EditFood() {
         <div className="flex flex-col gap-1">
           <label className="text-sm font-semibold text-slate-600">Food Title</label>
           <input
-            className="p-3 transition-all border outline-none rounded-xl focus:ring-2 focus:ring-orange-500"
+            className="p-3 border outline-none rounded-xl focus:ring-2 focus:ring-orange-500"
             value={food.title}
             onChange={(e) => setFood({ ...food, title: e.target.value })}
-            placeholder="e.g. Delicious Pizza"
             required
           />
         </div>
@@ -79,25 +80,17 @@ export default function EditFood() {
           <label className="text-sm font-semibold text-slate-600">Price (BDT)</label>
           <input
             type="number"
-            className="p-3 transition-all border outline-none rounded-xl focus:ring-2 focus:ring-orange-500"
+            className="p-3 border outline-none rounded-xl focus:ring-2 focus:ring-orange-500"
             value={food.price}
             onChange={(e) => setFood({ ...food, price: e.target.value })}
-            placeholder="e.g. 500"
             required
           />
         </div>
 
-        <button 
-          type="submit"
-          className="py-3 mt-4 font-bold text-white transition-all bg-orange-500 shadow-lg hover:bg-orange-600 rounded-xl active:scale-95 shadow-orange-100"
-        >
+        <button type="submit" className="py-3 mt-4 font-bold text-white bg-orange-500 rounded-xl hover:bg-orange-600">
           Update Food
         </button>
-        <button 
-          type="button"
-          onClick={() => navigate("/")}
-          className="py-2 text-sm font-medium text-slate-400 hover:text-slate-600"
-        >
+        <button type="button" onClick={() => navigate("/")} className="py-2 text-sm font-medium text-slate-400">
           Cancel
         </button>
       </form>
