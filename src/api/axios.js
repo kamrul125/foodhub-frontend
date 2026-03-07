@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api",
+  // localhost পরিবর্তন করে আপনার ব্যাকএন্ডের Vercel লিঙ্কটি এখানে দিন
+  baseURL: "https://foodhub-backend.vercel.app/api", 
 });
 
 api.interceptors.request.use((config) => {
