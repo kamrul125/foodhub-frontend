@@ -12,7 +12,7 @@ export default function FoodList() {
     setLoading(true);
     api.get("/foods")
       .then((res) => {
-        // API response schema অনুযায়ী ডাটা সেট করা
+      
         setFoods(res.data.data || res.data); 
         setLoading(false);
       })
@@ -47,7 +47,7 @@ export default function FoodList() {
       try {
         await api.delete(`/foods/${foodId}`);
         alert("খাবারটি সফলভাবে ডিলিট হয়েছে!");
-        fetchFoods(); // লিস্ট রিফ্রেশ করা
+        fetchFoods();
       } catch (err) {
         alert("ডিলিট করতে সমস্যা হয়েছে।");
       }
